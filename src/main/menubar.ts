@@ -25,7 +25,7 @@ export function createMenubar({ tray, mainWindowState }: { tray: Tray; mainWindo
 
       webPreferences: {
         webviewTag: true,
-        devTools: !app.isPackaged,
+        devTools: true,
         preload: getPreloadPath(),
         spellcheck: false,
         scrollBounce: true,

@@ -1,5 +1,5 @@
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import log from 'electron-log/main.js';
 import { app, BrowserWindow, nativeTheme } from 'electron';
 import { release } from 'node:os';
@@ -17,7 +17,7 @@ export function resolveHtmlPath() {
     const port = 3456;
     return `http://localhost:${port}`;
   } else {
-    return `file://${path.resolve(rendererPath, 'index.html')}`;
+    return pathToFileURL(path.resolve(rendererPath, 'index.html')).toString();
   }
 }
 

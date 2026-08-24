@@ -29,43 +29,13 @@ export async function GetFixFunds(funds: (Fund.ResponseItem & Fund.FixData)[]) {
 }
 
 export async function GetFunds(config: Fund.SettingItem[], fundApiTypeSetting: Enums.FundApiType) {
-  const collectors = config.map(
-    ({ code }) =>
-      () =>
-        GetFund(code, fundApiTypeSetting)
-  );
-  const load = () => {
-    // switch (fundApiTypeSetting) {
-    //   case Enums.FundApiType.Tencent:
-    //     return Adapters.ChokeGroupAdapter(collectors, 3, 500);
-    //   case Enums.FundApiType.Ant:
-    //     return Adapters.ChokeGroupAdapter(collectors, 3, 800);
-    //   case Enums.FundApiType.Fund10jqka:
-    //     return Adapters.ChokeGroupAdapter(collectors, 3, 800);
-    //   case Enums.FundApiType.Eastmoney:
-    //   default:
-    //     return Adapters.ChokeGroupAdapter(collectors, 3, 800);
-    // }
-    return Adapters.ChokeGroupAdapter(collectors, 3, 500);
-  };
-  const list = await load();
-
+  if (!config || !config.length) return [];
+  const codes = config.map(({ code }) => code);
+  const list = await Services.Fund.FromSinaBatch(codes);
   return list.filter(Utils.NotEmpty);
 }
 
 export async function GetFund(code: string, fundApiTypeSetting: Enums.FundApiType) {
-  // switch (fundApiTypeSetting) {
-  //   case Enums.FundApiType.Tencent:
-  //     return Services.Fund.FromTencent(code);
-  //   case Enums.FundApiType.Ant:
-  //     return Services.Fund.FromFund123(code);
-  //   case Enums.FundApiType.Fund10jqka:
-  //     return Services.Fund.FromFund10jqka(code);
-  //   case Enums.FundApiType.Eastmoney:
-  //   default:
-  //     // 默认请求天天基金
-  //     return Services.Fund.FromEastmoney(code);
-  // }
   return Services.Fund.FromEastmoney(code);
 }
 

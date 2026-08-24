@@ -335,6 +335,16 @@ function main() {
       return { action: 'deny' };
     });
 
+    mb.window?.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
+      console.error(`Failed to load ${validatedURL}: [${errorCode}] ${errorDescription}`);
+    });
+
+    mb.window?.webContents.on('before-input-event', (event, input) => {
+      if (input.key === 'F12' && input.type === 'keyDown') {
+        mb.window?.webContents.toggleDevTools();
+      }
+    });
+
     // 打开开发者工具
     if (!app.isPackaged) {
       mb.window?.webContents.openDevTools({ mode: 'undocked' });

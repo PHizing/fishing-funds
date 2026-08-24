@@ -1,4 +1,3 @@
-// @ts-expect-error: cacheStores should exist--it does not
 import { Agent, request, Dispatcher, interceptors, cacheStores } from 'undici';
 import enhInterceptors from '@lib/enh/httpInterceptors';
 
